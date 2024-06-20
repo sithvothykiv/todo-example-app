@@ -20,8 +20,10 @@ jobs:
           architecture: x64
 
       - name: Install dependencies
-      - run: flutter pub get
-      - run: pod repo update
+        run: flutter pub get
+
+      - name: Install dependencies from pod file
+        run: pod repo update
         working-directory: ios
 
       - name: Build Android APK
