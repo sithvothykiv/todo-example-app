@@ -22,6 +22,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Running pod update in iOS
       - run: pod repo update
         working-directory: ios
 
