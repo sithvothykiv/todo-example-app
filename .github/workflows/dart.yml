@@ -10,11 +10,11 @@ jobs:
     runs-on: macos-latest
 
     env:
-      FLUTTER_VERSION: '3.19.4'
+      FLUTTER_VERSION: '3.0.0'
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3 # Updated to use Node.js 20
+        uses: actions/checkout@v4 # Updated to use Node.js 20
 
       - name: Set up Flutter
         uses: actions/checkout@v3 # Updated to use Node.js 20
