@@ -5,9 +5,8 @@ sealed class TasksState {}
 
 final class FetchTasksSuccess extends TasksState {
   final List<TaskModel> tasks;
-  final bool isSearching;
 
-  FetchTasksSuccess({required this.tasks, this.isSearching = false});
+  FetchTasksSuccess({required this.tasks});
 }
 
 final class AddTasksSuccess extends TasksState {}

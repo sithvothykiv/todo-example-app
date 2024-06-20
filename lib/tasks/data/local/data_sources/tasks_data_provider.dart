@@ -57,18 +57,6 @@ class TaskDataProvider {
           return 0;
         });
         break;
-      case 2:
-        //sort by pending tasks
-        tasks.sort((a, b) {
-          if (a.completed == b.completed) {
-            return 0;
-          } else if (a.completed) {
-            return 1;
-          } else {
-            return -1;
-          }
-        });
-        break;
     }
     return tasks;
   }
@@ -112,15 +100,5 @@ class TaskDataProvider {
     } catch (exception) {
       throw Exception(handleException(exception));
     }
-  }
-
-  Future<List<TaskModel>> searchTasks(String keywords) async {
-    var searchText = keywords.toLowerCase();
-    List<TaskModel> matchedTasked = tasks;
-    return matchedTasked.where((task) {
-      final titleMatches = task.title.toLowerCase().contains(searchText);
-      final descriptionMatches = task.description.toLowerCase().contains(searchText);
-      return titleMatches || descriptionMatches;
-    }).toList();
   }
 }

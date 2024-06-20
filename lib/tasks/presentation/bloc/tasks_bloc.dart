@@ -17,7 +17,6 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     on<UpdateTaskEvent>(_updateTask);
     on<DeleteTaskEvent>(_deleteTask);
     on<SortTaskEvent>(_sortTasks);
-    on<SearchTaskEvent>(_searchTasks);
   }
 
   _addNewTask(AddNewTaskEvent event, Emitter<TasksState> emit) async {
@@ -60,8 +59,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         return emit(UpdateTaskFailure(error: 'Task title cannot be blank'));
       }
       if (event.taskModel.description.trim().isEmpty) {
-        return emit(
-            UpdateTaskFailure(error: 'Task description cannot be blank'));
+        return emit(UpdateTaskFailure(error: 'Task description cannot be blank'));
       }
       if (event.taskModel.startDateTime == null) {
         return emit(UpdateTaskFailure(error: 'Missing task start date'));
@@ -91,10 +89,5 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   _sortTasks(SortTaskEvent event, Emitter<TasksState> emit) async {
     final tasks = await taskRepository.sortTasks(event.sortOption);
     return emit(FetchTasksSuccess(tasks: tasks));
-  }
-
-  _searchTasks(SearchTaskEvent event, Emitter<TasksState> emit) async {
-    final tasks = await taskRepository.searchTasks(event.keywords);
-    return emit(FetchTasksSuccess(tasks: tasks, isSearching: true));
   }
 }
