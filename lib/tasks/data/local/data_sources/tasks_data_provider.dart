@@ -37,7 +37,7 @@ class TaskDataProvider {
     switch (sortOption) {
       case 0:
         tasks.sort((a, b) {
-          // Sort by date
+          /// Sort by date
           if (a.startDateTime!.isAfter(b.startDateTime!)) {
             return 1;
           } else if (a.startDateTime!.isBefore(b.startDateTime!)) {
@@ -47,7 +47,8 @@ class TaskDataProvider {
         });
         break;
       case 1:
-        //sort by completed tasks
+
+        /// Sort by completed tasks
         tasks.sort((a, b) {
           if (!a.completed && b.completed) {
             return 1;

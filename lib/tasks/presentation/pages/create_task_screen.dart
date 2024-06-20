@@ -5,23 +5,21 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:todos_app/components/widgets.dart';
 import 'package:todos_app/tasks/data/local/model/task_model.dart';
 import 'package:todos_app/utils/font_sizes.dart';
+import 'package:todos_app/utils/util.dart';
 
 import '../../../components/build_text_field.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../utils/color_palette.dart';
-import '../../../utils/util.dart';
 import '../bloc/tasks_bloc.dart';
 
-class UpdateTaskScreen extends StatefulWidget {
-  final TaskModel taskModel;
-
-  const UpdateTaskScreen({super.key, required this.taskModel});
+class CreateTaskScreen extends StatefulWidget {
+  const CreateTaskScreen({super.key});
 
   @override
-  State<UpdateTaskScreen> createState() => _UpdateTaskScreenState();
+  State<CreateTaskScreen> createState() => _CreateTaskScreenState();
 }
 
-class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
+class _CreateTaskScreenState extends State<CreateTaskScreen> {
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
 
@@ -30,6 +28,12 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+
+  @override
+  void initState() {
+    _selectedDay = _focusedDay;
+    super.initState();
+  }
 
   _onRangeSelected(DateTime? start, DateTime? end, DateTime focusDay) {
     setState(() {
@@ -41,40 +45,18 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
   }
 
   @override
-  void dispose() {
-    title.dispose();
-    description.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    title.text = widget.taskModel.title;
-    description.text = widget.taskModel.description;
-    _selectedDay = _focusedDay;
-    _rangeStart = widget.taskModel.startDateTime;
-    _rangeEnd = widget.taskModel.stopDateTime;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-      ),
+      value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       child: Scaffold(
         backgroundColor: kWhiteColor,
-        appBar: const CustomAppBar(
-          title: 'Update Task',
-        ),
-        body: _buildBody(size),
+        appBar: const CustomAppBar(title: 'Create New Task'),
+        body: _buildBody(),
       ),
     );
   }
 
-  _buildBody(Size size) {
+  _buildBody() {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => FocusScope.of(context).unfocus(),
@@ -82,10 +64,10 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
         padding: const EdgeInsets.all(20),
         child: BlocConsumer<TasksBloc, TasksState>(
           listener: (context, state) {
-            if (state is UpdateTaskFailure) {
+            if (state is AddTaskFailure) {
               ScaffoldMessenger.of(context).showSnackBar(getSnackBar(state.error, kRed));
             }
-            if (state is UpdateTaskSuccess) {
+            if (state is AddTasksSuccess) {
               Navigator.pop(context);
             }
           },
@@ -121,10 +103,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                 const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor.withOpacity(.1),
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  ),
+                  decoration: BoxDecoration(color: kPrimaryColor.withOpacity(.1), borderRadius: const BorderRadius.all(Radius.circular(5))),
                   child: buildText(
                     _rangeStart != null && _rangeEnd != null
                         ? 'Task starting at ${formatDate(dateTime: _rangeStart.toString())} - ${formatDate(dateTime: _rangeEnd.toString())}'
@@ -145,9 +124,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                   TextAlign.start,
                   TextOverflow.clip,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 BuildTextField(
                   hint: "Task Title",
                   controller: title,
@@ -155,9 +132,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                   fillColor: kWhiteColor,
                   onChange: (value) {},
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 buildText(
                   'Description',
                   kBlackColor,
@@ -166,9 +141,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                   TextAlign.start,
                   TextOverflow.clip,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 BuildTextField(
                   hint: "Task Description",
                   controller: description,
@@ -177,29 +150,52 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                   onChange: (value) {},
                 ),
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: size.width,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                      backgroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all<Color>(kWhiteColor),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: buildText('Cancel', kBlackColor, textMedium, FontWeight.w600, TextAlign.center, TextOverflow.clip),
+                          )),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          final String taskId = DateTime.now().millisecondsSinceEpoch.toString();
+                          var taskModel = TaskModel(id: taskId, title: title.text, description: description.text, startDateTime: _rangeStart, stopDateTime: _rangeEnd);
+                          context.read<TasksBloc>().add(AddNewTaskEvent(taskModel: taskModel));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: buildText('Save', kWhiteColor, textMedium, FontWeight.w600, TextAlign.center, TextOverflow.clip),
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      var taskModel = TaskModel(
-                          id: widget.taskModel.id, title: title.text, description: description.text, completed: widget.taskModel.completed, startDateTime: _rangeStart, stopDateTime: _rangeEnd);
-                      context.read<TasksBloc>().add(UpdateTaskEvent(taskModel: taskModel));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: buildText('Update', kWhiteColor, textMedium, FontWeight.w600, TextAlign.center, TextOverflow.clip),
-                    ),
-                  ),
-                ),
+                  ],
+                )
               ],
             );
           },
