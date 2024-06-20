@@ -20,9 +20,7 @@ jobs:
           architecture: x64
 
       - name: Install dependencies
-        run: flutter pub get
-
-      - name: Running pod update in iOS
+      - run: flutter pub get
       - run: pod repo update
         working-directory: ios
 
