@@ -1,4 +1,4 @@
-name: Build Debug Flutter App
+name: Build Flutter App
 
 on:
   push:
@@ -9,35 +9,36 @@ jobs:
   build:
     runs-on: macos-latest
 
-    env:
-      FLUTTER_VERSION: '3.0.0'
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # Updated to use Node.js 20
+        uses: actions/checkout@v3 # Updated to use Node.js 20
 
       - name: Set up Flutter
-        uses: actions/checkout@v3 # Updated to use Node.js 20
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          architecture: x64
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build Android Debug APK
-        run: flutter build apk --debug
+      - run: pod repo update
+        working-directory: ios
 
-      - name: Build iOS Debug
-        run: flutter build ios --debug
+      - name: Build Android APK
+        run: flutter build apk --release --no-codesign
 
-      - name: Upload Android Debug APK to Artifacts
+      - name: Build iOS ipa
+        run: flutter build ios --release --no-codesign
+
+      - name: Upload Android APK to Artifacts
         uses: actions/upload-artifact@v3 # Updated to use Node.js 20
         with:
-          name: android-debug-apk
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload iOS Debug Build to Artifacts
         uses: actions/upload-artifact@v3 # Updated to use Node.js 20
         with:
-          name: ios-debug-build
+          name: ios-build
           path: build/ios/iphoneos/Runner.app
