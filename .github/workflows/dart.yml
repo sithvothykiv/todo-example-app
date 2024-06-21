@@ -47,11 +47,19 @@ jobs:
         with:
           name: ios-build
           path: build/ios/iphoneos/Runner.app
+      - name: Create Git Tag
+        id: tag
+        run: |
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
 
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ env.TAG_NAME }}
           files: |
             build/app/outputs/flutter-apk/app-release.apk
             build/ios/iphoneos/Runner.app
