@@ -36,22 +36,26 @@ jobs:
 
       - run: flutter build ios --release --no-codesign
 
+      - run: mkdir Payload
+        working-directory: build/ios/iphoneos
+
+      - run: mv Runner.app/ Payload
+        working-directory: build/ios/iphoneos
+
+      - name: Zip output
+        run: zip -qq -r -9 FlutterIpaExport.ipa Payload
+        working-directory: build/ios/iphoneos
+
       - name: Upload Android APK to Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Upload iOS Debug Build to Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ios-build
-          path: build/ios/iphoneos/Runner.app
-
       - name: Create Git Tag
         id: tag
         run: |
-          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          TAG_NAME="TodoApp-v$(date +'%Y%m%d%H%M%S')"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -66,6 +70,6 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           files: |
             build/app/outputs/flutter-apk/app-release.apk
-            build/ios/iphoneos/Runner.app
+            build/ios/iphoneos/FlutterIpaExport.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
