@@ -8,7 +8,6 @@ import 'package:todos_app/utils/font_sizes.dart';
 import 'package:todos_app/utils/util.dart';
 
 import '../../../components/build_text_field.dart';
-import '../../../components/custom_app_bar.dart';
 import '../../../utils/color_palette.dart';
 import '../bloc/tasks_bloc.dart';
 
@@ -50,7 +49,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       child: Scaffold(
         backgroundColor: kWhiteColor,
-        appBar: const CustomAppBar(title: 'Create New Task'),
+        appBar: AppBar(
+          title: const Text('Create new Task'),
+        ),
         body: _buildBody(),
       ),
     );
@@ -163,12 +164,17 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                               ),
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                          onPressed: () => Navigator.pop(context),
                           child: Padding(
                             padding: const EdgeInsets.all(15),
-                            child: buildText('Cancel', kBlackColor, textMedium, FontWeight.w600, TextAlign.center, TextOverflow.clip),
+                            child: buildText(
+                              'Cancel',
+                              kBlackColor,
+                              textMedium,
+                              FontWeight.w600,
+                              TextAlign.center,
+                              TextOverflow.clip,
+                            ),
                           )),
                     ),
                     const SizedBox(width: 20),
@@ -183,14 +189,17 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          final String taskId = DateTime.now().millisecondsSinceEpoch.toString();
-                          var taskModel = TaskModel(id: taskId, title: title.text, description: description.text, startDateTime: _rangeStart, stopDateTime: _rangeEnd);
-                          context.read<TasksBloc>().add(AddNewTaskEvent(taskModel: taskModel));
-                        },
+                        onPressed: () => _addNewTask(),
                         child: Padding(
                           padding: const EdgeInsets.all(15),
-                          child: buildText('Save', kWhiteColor, textMedium, FontWeight.w600, TextAlign.center, TextOverflow.clip),
+                          child: buildText(
+                            'Save',
+                            kWhiteColor,
+                            textMedium,
+                            FontWeight.w600,
+                            TextAlign.center,
+                            TextOverflow.clip,
+                          ),
                         ),
                       ),
                     ),
@@ -202,5 +211,17 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         ),
       ),
     );
+  }
+
+  _addNewTask() {
+    final String taskId = DateTime.now().millisecondsSinceEpoch.toString();
+    var taskModel = TaskModel(
+      id: taskId,
+      title: title.text,
+      description: description.text,
+      startDateTime: _rangeStart,
+      stopDateTime: _rangeEnd,
+    );
+    context.read<TasksBloc>().add(AddNewTaskEvent(taskModel: taskModel));
   }
 }

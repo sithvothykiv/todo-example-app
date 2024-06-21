@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todos_app/components/custom_app_bar.dart';
+import 'package:todos_app/res/r.dart';
 import 'package:todos_app/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:todos_app/tasks/presentation/widget/task_item_view.dart';
 import 'package:todos_app/utils/color_palette.dart';
@@ -53,38 +54,25 @@ class _TasksScreenState extends State<TasksScreen> {
   _actionWidgets() {
     return [
       PopupMenuButton<int>(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         elevation: 1,
-        onSelected: (value) {
-          switch (value) {
-            case 0:
-              {
-                context.read<TasksBloc>().add(SortTaskEvent(sortOption: 0));
-                break;
-              }
-            case 1:
-              {
-                context.read<TasksBloc>().add(SortTaskEvent(sortOption: 1));
-                break;
-              }
-          }
-        },
+        onSelected: (value) => _onSelected(value),
         itemBuilder: (BuildContext context) {
           return [
             PopupMenuItem<int>(
               value: 0,
               child: Row(
                 children: [
-                  SvgPicture.asset(
-                    'assets/svgs/calender.svg',
-                    width: 15,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  buildText('Sort by date', kBlackColor, textSmall, FontWeight.normal, TextAlign.start, TextOverflow.clip)
+                  SvgPicture.asset(R.calender, width: 15),
+                  const SizedBox(width: 10),
+                  buildText(
+                    'Sort by date',
+                    kBlackColor,
+                    textSmall,
+                    FontWeight.normal,
+                    TextAlign.start,
+                    TextOverflow.clip,
+                  )
                 ],
               ),
             ),
@@ -92,24 +80,29 @@ class _TasksScreenState extends State<TasksScreen> {
               value: 1,
               child: Row(
                 children: [
-                  SvgPicture.asset(
-                    'assets/svgs/task_checked.svg',
-                    width: 15,
-                  ),
+                  SvgPicture.asset(R.taskChecked, width: 15),
                   const SizedBox(
                     width: 10,
                   ),
-                  buildText('Completed tasks', kBlackColor, textSmall, FontWeight.normal, TextAlign.start, TextOverflow.clip)
+                  buildText(
+                    'Completed tasks',
+                    kBlackColor,
+                    textSmall,
+                    FontWeight.normal,
+                    TextAlign.start,
+                    TextOverflow.clip,
+                  )
                 ],
               ),
             ),
           ];
         },
-        child: Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: SvgPicture.asset('assets/svgs/filter.svg'),
-        ),
-      )
+        child: SvgPicture.asset(R.filter),
+      ),
+      IconButton(
+        onPressed: () => Navigator.pushNamed(context, AppPages.dashboard),
+        icon: const Icon(Icons.auto_graph),
+      ),
     ];
   }
 
@@ -131,14 +124,19 @@ class _TasksScreenState extends State<TasksScreen> {
           },
           builder: (context, state) {
             if (state is TasksLoading) {
-              return const Center(
-                child: CupertinoActivityIndicator(),
-              );
+              return const Center(child: CupertinoActivityIndicator());
             }
 
             if (state is LoadTaskFailure) {
               return Center(
-                child: buildText(state.error, kBlackColor, textMedium, FontWeight.normal, TextAlign.center, TextOverflow.clip),
+                child: buildText(
+                  state.error,
+                  kBlackColor,
+                  textMedium,
+                  FontWeight.normal,
+                  TextAlign.center,
+                  TextOverflow.clip,
+                ),
               );
             }
 
@@ -159,14 +157,8 @@ class _TasksScreenState extends State<TasksScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            'assets/svgs/tasks.svg',
-                            height: size.height * .20,
-                            width: size.width,
-                          ),
-                          const SizedBox(
-                            height: 50,
-                          ),
+                          SvgPicture.asset(R.tasks, height: size.height * .20, width: size.width),
+                          const SizedBox(height: 50),
                           buildText(
                             'Schedule your tasks',
                             kBlackColor,
@@ -196,13 +188,23 @@ class _TasksScreenState extends State<TasksScreen> {
 
   _floatingCreateTaskBtn() {
     return FloatingActionButton(
-      child: const Icon(
-        Icons.add_circle,
-        color: kPrimaryColor,
-      ),
-      onPressed: () {
-        Navigator.pushNamed(context, AppPages.createNewTask);
-      },
+      child: const Icon(Icons.add_circle, color: kPrimaryColor),
+      onPressed: () => Navigator.pushNamed(context, AppPages.createNewTask),
     );
+  }
+
+  _onSelected(int value) {
+    switch (value) {
+      case 0:
+        {
+          context.read<TasksBloc>().add(SortTaskEvent(sortOption: 0));
+          break;
+        }
+      case 1:
+        {
+          context.read<TasksBloc>().add(SortTaskEvent(sortOption: 1));
+          break;
+        }
+    }
   }
 }

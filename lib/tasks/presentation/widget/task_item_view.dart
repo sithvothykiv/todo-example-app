@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:todos_app/res/r.dart';
 
 import '../../../components/widgets.dart';
 import '../../../routes/app_pages.dart';
@@ -36,17 +37,7 @@ class _TaskItemViewState extends State<TaskItemView> {
         children: [
           Checkbox(
             value: widget.taskModel.completed,
-            onChanged: (value) {
-              var taskModel = TaskModel(
-                id: widget.taskModel.id,
-                title: widget.taskModel.title,
-                description: widget.taskModel.description,
-                completed: !widget.taskModel.completed,
-                startDateTime: widget.taskModel.startDateTime,
-                stopDateTime: widget.taskModel.stopDateTime,
-              );
-              context.read<TasksBloc>().add(UpdateTaskEvent(taskModel: taskModel));
-            },
+            onChanged: (value) => _onChanged,
           ),
           Expanded(
             child: Column(
@@ -55,41 +46,39 @@ class _TaskItemViewState extends State<TaskItemView> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: buildText(widget.taskModel.title, kBlackColor, textMedium, FontWeight.w500, TextAlign.start, TextOverflow.clip)),
+                    Expanded(
+                      child: buildText(
+                        widget.taskModel.title,
+                        kBlackColor,
+                        textMedium,
+                        FontWeight.w500,
+                        TextAlign.start,
+                        TextOverflow.clip,
+                      ),
+                    ),
                     PopupMenuButton<int>(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       color: kWhiteColor,
                       elevation: 1,
-                      onSelected: (value) {
-                        switch (value) {
-                          case 0:
-                            {
-                              Navigator.pushNamed(context, AppPages.updateTask, arguments: widget.taskModel);
-                              break;
-                            }
-                          case 1:
-                            {
-                              context.read<TasksBloc>().add(DeleteTaskEvent(taskModel: widget.taskModel));
-                              break;
-                            }
-                        }
-                      },
+                      onSelected: (value) => _onSelected(value),
                       itemBuilder: (BuildContext context) {
                         return [
                           PopupMenuItem<int>(
                             value: 0,
                             child: Row(
                               children: [
-                                SvgPicture.asset(
-                                  'assets/svgs/edit.svg',
-                                  width: 20,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                buildText('Edit task', kBlackColor, textMedium, FontWeight.normal, TextAlign.start, TextOverflow.clip)
+                                SvgPicture.asset(R.edit, width: 20),
+                                const SizedBox(width: 10),
+                                buildText(
+                                  'Edit task',
+                                  kBlackColor,
+                                  textMedium,
+                                  FontWeight.normal,
+                                  TextAlign.start,
+                                  TextOverflow.clip,
+                                )
                               ],
                             ),
                           ),
@@ -97,26 +86,26 @@ class _TaskItemViewState extends State<TaskItemView> {
                             value: 1,
                             child: Row(
                               children: [
-                                SvgPicture.asset(
-                                  'assets/svgs/delete.svg',
-                                  width: 20,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                buildText('Delete task', kRed, textMedium, FontWeight.normal, TextAlign.start, TextOverflow.clip)
+                                SvgPicture.asset(R.delete, width: 20),
+                                const SizedBox(width: 10),
+                                buildText(
+                                  'Delete task',
+                                  kRed,
+                                  textMedium,
+                                  FontWeight.normal,
+                                  TextAlign.start,
+                                  TextOverflow.clip,
+                                )
                               ],
                             ),
                           ),
                         ];
                       },
-                      child: SvgPicture.asset('assets/svgs/vertical_menu.svg'),
+                      child: SvgPicture.asset(R.verticalMenu),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                const SizedBox(height: 5),
                 Expanded(
                   child: buildText(
                     widget.taskModel.description,
@@ -136,13 +125,8 @@ class _TaskItemViewState extends State<TaskItemView> {
                   ),
                   child: Row(
                     children: [
-                      SvgPicture.asset(
-                        'assets/svgs/calender.svg',
-                        width: 12,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      SvgPicture.asset(R.calender, width: 12),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: buildText(
                           '${formatDate(dateTime: widget.taskModel.startDateTime.toString())} - ${formatDate(dateTime: widget.taskModel.stopDateTime.toString())}',
@@ -163,5 +147,32 @@ class _TaskItemViewState extends State<TaskItemView> {
         ],
       ),
     );
+  }
+
+  _onSelected(int value) {
+    switch (value) {
+      case 0:
+        {
+          Navigator.pushNamed(context, AppPages.updateTask, arguments: widget.taskModel);
+          break;
+        }
+      case 1:
+        {
+          context.read<TasksBloc>().add(DeleteTaskEvent(taskModel: widget.taskModel));
+          break;
+        }
+    }
+  }
+
+  _onChanged() {
+    var taskModel = TaskModel(
+      id: widget.taskModel.id,
+      title: widget.taskModel.title,
+      description: widget.taskModel.description,
+      completed: !widget.taskModel.completed,
+      startDateTime: widget.taskModel.startDateTime,
+      stopDateTime: widget.taskModel.stopDateTime,
+    );
+    context.read<TasksBloc>().add(UpdateTaskEvent(taskModel: taskModel));
   }
 }

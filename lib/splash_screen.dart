@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todos_app/res/r.dart';
 
 import 'components/widgets.dart';
 import 'routes/app_pages.dart';
@@ -34,18 +35,25 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/app_logo.png',
-              width: 100,
+            Image.asset(R.appLogo, width: 100),
+            const SizedBox(height: 20),
+            buildText(
+              'Everything Tasks',
+              kWhiteColor,
+              textBold,
+              FontWeight.w600,
+              TextAlign.center,
+              TextOverflow.clip,
             ),
-            const SizedBox(
-              height: 20,
+            const SizedBox(height: 10),
+            buildText(
+              'Schedule your week with ease',
+              kWhiteColor,
+              textTiny,
+              FontWeight.normal,
+              TextAlign.center,
+              TextOverflow.clip,
             ),
-            buildText('Everything Tasks', kWhiteColor, textBold, FontWeight.w600, TextAlign.center, TextOverflow.clip),
-            const SizedBox(
-              height: 10,
-            ),
-            buildText('Schedule your week with ease', kWhiteColor, textTiny, FontWeight.normal, TextAlign.center, TextOverflow.clip),
           ],
         ),
       ),

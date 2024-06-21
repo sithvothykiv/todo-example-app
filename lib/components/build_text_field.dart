@@ -16,26 +16,25 @@ class BuildTextField extends StatelessWidget {
   final int? maxLength;
   final Function onChange;
 
-  const BuildTextField(
-      {super.key,
-      required this.hint,
-      this.controller,
-      required this.inputType,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.obscureText = false,
-      this.enabled = true,
-      this.fillColor = kWhiteColor,
-      this.hintColor = kGrey1,
-      this.maxLength,
-      required this.onChange});
+  const BuildTextField({
+    super.key,
+    required this.hint,
+    this.controller,
+    required this.inputType,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.obscureText = false,
+    this.enabled = true,
+    this.fillColor = kWhiteColor,
+    this.hintColor = kGrey1,
+    this.maxLength,
+    required this.onChange,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: (value) {
-        onChange(value);
-      },
+      onChanged: (value) => onChange(value),
       validator: (val) => val!.isEmpty ? 'required' : null,
       keyboardType: inputType,
       obscureText: obscureText,

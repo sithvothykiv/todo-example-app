@@ -30,7 +30,13 @@ void main() {
     test('Add new task', () async {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       sut = TaskDataProvider(sharedPreferences);
-      final task = TaskModel(id: 'id', title: 'title', description: 'description', startDateTime: DateTime.now(), stopDateTime: DateTime.now());
+      final task = TaskModel(
+        id: 'id',
+        title: 'title',
+        description: 'description',
+        startDateTime: DateTime.now(),
+        stopDateTime: DateTime.now(),
+      );
       expect(sut.tasks.length, 0);
       await sut.createTask(task);
       expect(sut.tasks.length, 1);
@@ -39,10 +45,22 @@ void main() {
     test('Update task', () async {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       sut = TaskDataProvider(sharedPreferences);
-      final task = TaskModel(id: 'id', title: 'title', description: 'description', startDateTime: DateTime.now(), stopDateTime: DateTime.now());
+      final task = TaskModel(
+        id: 'id',
+        title: 'title',
+        description: 'description',
+        startDateTime: DateTime.now(),
+        stopDateTime: DateTime.now(),
+      );
       sut.createTask(task);
       expect(sut.tasks[0].title, 'title');
-      final updatedTask = TaskModel(id: 'id', title: 'new title', description: 'new description', startDateTime: DateTime.now(), stopDateTime: DateTime.now());
+      final updatedTask = TaskModel(
+        id: 'id',
+        title: 'new title',
+        description: 'new description',
+        startDateTime: DateTime.now(),
+        stopDateTime: DateTime.now(),
+      );
       sut.updateTask(updatedTask);
       expect(sut.tasks[0].title, 'new title');
       expect(sut.tasks[0].description, 'new description');
@@ -51,7 +69,13 @@ void main() {
     test('Delete task', () async {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       sut = TaskDataProvider(sharedPreferences);
-      final task = TaskModel(id: 'delete_task_id', title: 'delete_task_title', description: 'delete_task_description', startDateTime: DateTime.now(), stopDateTime: DateTime.now());
+      final task = TaskModel(
+        id: 'delete_task_id',
+        title: 'delete_task_title',
+        description: 'delete_task_description',
+        startDateTime: DateTime.now(),
+        stopDateTime: DateTime.now(),
+      );
       sut.createTask(task);
       expect(sut.tasks.length, 1);
       expect(sut.tasks[0].id, 'delete_task_id');

@@ -7,7 +7,6 @@ import 'package:todos_app/tasks/data/local/model/task_model.dart';
 import 'package:todos_app/utils/font_sizes.dart';
 
 import '../../../components/build_text_field.dart';
-import '../../../components/custom_app_bar.dart';
 import '../../../utils/color_palette.dart';
 import '../../../utils/util.dart';
 import '../bloc/tasks_bloc.dart';
@@ -66,9 +65,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
       ),
       child: Scaffold(
         backgroundColor: kWhiteColor,
-        appBar: const CustomAppBar(
-          title: 'Update Task',
-        ),
+        appBar: AppBar(title: const Text('Update task')),
         body: _buildBody(size),
       ),
     );
@@ -189,11 +186,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      var taskModel = TaskModel(
-                          id: widget.taskModel.id, title: title.text, description: description.text, completed: widget.taskModel.completed, startDateTime: _rangeStart, stopDateTime: _rangeEnd);
-                      context.read<TasksBloc>().add(UpdateTaskEvent(taskModel: taskModel));
-                    },
+                    onPressed: () => _updateTask(),
                     child: Padding(
                       padding: const EdgeInsets.all(15),
                       child: buildText('Update', kWhiteColor, textMedium, FontWeight.w600, TextAlign.center, TextOverflow.clip),
@@ -206,5 +199,17 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
         ),
       ),
     );
+  }
+
+  _updateTask() {
+    var taskModel = TaskModel(
+      id: widget.taskModel.id,
+      title: title.text,
+      description: description.text,
+      completed: widget.taskModel.completed,
+      startDateTime: _rangeStart,
+      stopDateTime: _rangeEnd,
+    );
+    context.read<TasksBloc>().add(UpdateTaskEvent(taskModel: taskModel));
   }
 }

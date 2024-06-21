@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^1.0.0
   table_calendar: ^3.0.9
   intl: ^0.18.1
+  d_chart: ^2.6.9
 
 
 #  state management
