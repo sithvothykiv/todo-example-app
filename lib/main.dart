@@ -9,10 +9,10 @@ import 'package:todos_app/tasks/data/repository/task_repository.dart';
 import 'package:todos_app/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:todos_app/utils/color_palette.dart';
 
-Future<void> main() async {
+Future<void> main({SharedPreferences? preferences}) async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = BlocStateOberver();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences ??= await SharedPreferences.getInstance();
   runApp(MyApp(preferences: preferences));
 }
 

@@ -81,9 +81,7 @@ class _TasksScreenState extends State<TasksScreen> {
               child: Row(
                 children: [
                   SvgPicture.asset(R.taskChecked, width: 15),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   buildText(
                     'Completed tasks',
                     kBlackColor,
@@ -100,6 +98,7 @@ class _TasksScreenState extends State<TasksScreen> {
         child: SvgPicture.asset(R.filter),
       ),
       IconButton(
+        key: Key('addTaskButton'),
         onPressed: () => Navigator.pushNamed(context, AppPages.dashboard),
         icon: const Icon(Icons.auto_graph),
       ),

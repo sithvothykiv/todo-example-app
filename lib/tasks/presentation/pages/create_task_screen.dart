@@ -127,6 +127,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 ),
                 const SizedBox(height: 10),
                 BuildTextField(
+                  key: Key('titleField'),
                   hint: "Task Title",
                   controller: title,
                   inputType: TextInputType.text,
@@ -144,6 +145,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 ),
                 const SizedBox(height: 10),
                 BuildTextField(
+                  key: Key('descriptionField'),
                   hint: "Task Description",
                   controller: description,
                   inputType: TextInputType.multiline,
@@ -155,27 +157,28 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                          style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                            backgroundColor: MaterialStateProperty.all<Color>(kWhiteColor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
-                              ),
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor: MaterialStateProperty.all<Color>(kWhiteColor),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
                             ),
                           ),
-                          onPressed: () => Navigator.pop(context),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: buildText(
-                              'Cancel',
-                              kBlackColor,
-                              textMedium,
-                              FontWeight.w600,
-                              TextAlign.center,
-                              TextOverflow.clip,
-                            ),
-                          )),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: buildText(
+                            'Cancel',
+                            kBlackColor,
+                            textMedium,
+                            FontWeight.w600,
+                            TextAlign.center,
+                            TextOverflow.clip,
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 20),
                     Expanded(

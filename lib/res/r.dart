@@ -3,19 +3,6 @@ class R {
 
   ///------------------------ assets ------------------------
 
-  ///------------------------ svgs ------------------------
-  static const String _svgs = '$_assets/svgs';
-  static const String edit = '$_svgs/edit.svg';
-  static const String task = '$_svgs/task.svg';
-  static const String tasks = '$_svgs/tasks.svg';
-  static const String delete = '$_svgs/delete.svg';
-  static const String filter = '$_svgs/filter.svg';
-  static const String calender = '$_svgs/calender.svg';
-  static const String backArrow = '$_svgs/back_arrow.svg';
-  static const String taskChecked = '$_svgs/task_checked.svg';
-  static const String verticalMenu = '$_svgs/vertical_menu.svg';
-  static const String horizontalMenu = '$_svgs/horizontal_menu.svg';
-
   ///------------------------ fonts ------------------------
   static const String _fonts = '$_assets/fonts';
   static const String soraBold = 'Sora-Bold';
@@ -29,5 +16,14 @@ class R {
 
   ///------------------------ images ------------------------
   static const String _images = '$_assets/images';
-  static const String appLogo = '$_images/app_logo.png';
+  static const String edit = '$_images/edit.svg';
+  static const String task = '$_images/task.svg';
+  static const String tasks = '$_images/tasks.svg';
+  static const String delete = '$_images/delete.svg';
+  static const String filter = '$_images/filter.svg';
+  static const String calender = '$_images/calender.svg';
+  static const String backArrow = '$_images/back_arrow.svg';
+  static const String taskChecked = '$_images/task_checked.svg';
+  static const String verticalMenu = '$_images/vertical_menu.svg';
+  static const String horizontalMenu = '$_images/horizontal_menu.svg';
 }
