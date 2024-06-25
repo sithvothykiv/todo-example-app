@@ -34,13 +34,11 @@ Error handling is implemented throughout the app to ensure a seamless user exper
 
 ### Unit Test
 Unit test has been integrated to test all functionalities from initial state
- - Creating task
- - Updating task
- - Deleting task
+ - [x] Creating task
+ - [ ] Updating task
+ - [ ] Deleting task
 
 
 ### Integration Test
 Test to verify the widget
- - Creating task
- - Updating task
- - Deleting task
+ - [x] Create task
